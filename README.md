@@ -13,6 +13,6 @@ Make sure that you've met the following requirements:
 ## How does it work?
 The Flask application is deployed within a [Docker-image](https://hub.docker.com/_/python/).
 
-This tries to produce two equivalent execution environments. In one environment is the Dashboard included, in the other it is not.
+This tries to produce two equivalent execution environments. In one environment the Dashboard is included, in the other it is not.
 
 The difference in results is assumed to be due to the Dashboard.
