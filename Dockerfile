@@ -7,7 +7,7 @@ COPY . .
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update
-RUN apt-get install -y apt-utils git wget python3-venv python3.6-dev
+RUN apt-get install -y git wget python3-venv python3.6-dev
 
 
 ARG dashboard
