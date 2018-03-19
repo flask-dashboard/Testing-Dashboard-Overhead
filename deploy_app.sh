@@ -47,7 +47,7 @@ cd ..
 git clone https://github.com/zeeguu-ecosystem/Zeeguu-API
 cd Zeeguu-API
 pip3.6 install flask-cors --upgrade
-if [ "$1" == "True" ] then
+if [ "$1" == "True" ]; then
 	echo "Installing Flask-MonitoringDashboard"
 	pip3.6 install flask_monitoringdashboard
 else
