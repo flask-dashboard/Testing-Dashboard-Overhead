@@ -4,8 +4,11 @@ WORKDIR /
 
 COPY . .
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update
-RUN apt-get install -y git wget python3.6 python3-venv
+RUN apt-get install -y apt-utils git wget python3-venv python3.6-dev
+
 
 ARG dashboard
 ENV dashboard=$dashboard
