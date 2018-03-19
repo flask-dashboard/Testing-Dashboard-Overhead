@@ -1,12 +1,13 @@
-FROM python:3
+FROM ubuntu:17.10
 
-WORKDIR /usr/src/app
-
-RUN pip install flask_monitoringdashboard
+WORKDIR /
 
 COPY . .
+
+RUN apt-get update
+RUN apt-get install -y git wget python3.6 python3-venv
 
 ARG dashboard
 ENV dashboard=$dashboard
 
-CMD python ./main.py $dashboard
+CMD ./deploy_app.sh $dashboard
