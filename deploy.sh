@@ -11,7 +11,7 @@ docker rm $(docker ps -aq)
 docker build -t webservice .
 
 echo "Deploy the webservice with the dashboard"
-docker run -it --name app_with_dashboard -p 5000:5000 -e dashboard=True webservice
+docker run -it --name app_with_dashboard -p 9001:9001 -e dashboard=True webservice
 echo "Wait until the webservice is successfully started"
 # sleep 5
 # python test.py $NUM_REQUESTS
