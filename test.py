@@ -22,13 +22,15 @@ def parse_args():
 def sleep_until_ready(host):
     """ Waits until the host is up."""
     now = time.time()
+    print('')
     while True:
         try:
             urllib2.urlopen(host + 'available_languages', timeout=1)
             return
         except Exception:
             time.sleep(1)
-            print('Waiting for {} seconds to boot up'.format(time.time() - now), end="\r")
+            sys.stdout.write('\rWaiting for {} seconds to boot up'.format(time.time() - now))
+            sys.stdout.flush()
 
 
 def measure_execution_time(host, page, n=100):
