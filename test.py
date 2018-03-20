@@ -3,6 +3,7 @@ Run this script for making a number of requests to the webservice
 """
 
 import sys
+import os
 import requests
 import time
 import urllib2
@@ -53,6 +54,11 @@ if __name__ == '__main__':
     data = measure_execution_time(host, page)
     print(data)
 
-    with open('{}.txt'.format(name), 'w') as file:
+    try:
+        os.makedirs('output')
+    except Exception as e:
+        print(e)
+
+    with open('output/{}.txt'.format(name), 'w') as file:
         for line in data:
             file.write(str(line) + '\n')
