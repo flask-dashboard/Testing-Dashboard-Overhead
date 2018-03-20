@@ -3,21 +3,10 @@ Run this script for making a number of requests to the webservice
 """
 
 import sys
-import os
 import requests
 import time
 import urllib2
-
-
-def parse_args():
-    """ Returns the host (as a string) and the name from the script arguments. """
-    try:
-        return sys.argv[1], sys.argv[2]
-    except Exception as e:
-        print('Got exception: {}'.format(e))
-        print('Usage: {} {{Host}} {{Name}}'.format(sys.argv[0]))
-        print('Given: {} {} {}'.format(sys.argv[0], sys.argv[1], sys.argv[2]))
-        sys.exit(1)
+from util import parse_args, save_result
 
 
 def sleep_until_ready(host):
@@ -48,16 +37,7 @@ def measure_execution_time(host, page, n=100):
 if __name__ == '__main__':
     host, name = parse_args()
     sleep_until_ready(host)
-    print('Ready for the real testing')
+    print('Ready for testing the webservice')
 
-    page = 'available_languages'
-    data = measure_execution_time(host, page)
-
-    try:
-        os.makedirs('output')
-    except Exception as e:
-        print(e)
-
-    with open('output/{}.txt'.format(name), 'w') as file:
-        for line in data:
-            file.write(str(line) + '\n')
+    data = measure_execution_time(host, page='available_languages')
+    save_result(data, name + '.txt')
