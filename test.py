@@ -28,7 +28,7 @@ def sleep_until_ready(host):
             return
         except Exception:
             time.sleep(1)
-            print('Waiting for {} seconds to boot up'.format(time.time() - now))
+            print('Waiting for {} seconds to boot up'.format(time.time() - now), end="\r")
 
 
 def measure_execution_time(host, page, n=100):
