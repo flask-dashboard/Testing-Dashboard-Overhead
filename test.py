@@ -22,7 +22,6 @@ def parse_args():
 def sleep_until_ready(host):
     """ Waits until the host is up."""
     now = time.time()
-    print('')
     while True:
         try:
             urllib2.urlopen(host + 'available_languages', timeout=1)
@@ -56,4 +55,4 @@ if __name__ == '__main__':
 
     with open('{}.txt'.format(name), 'w') as file:
         for line in data:
-            file.write(line + '\n')
+            file.write(str(line) + '\n')
