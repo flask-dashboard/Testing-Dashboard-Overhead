@@ -52,7 +52,6 @@ if __name__ == '__main__':
 
     page = 'available_languages'
     data = measure_execution_time(host, page)
-    print(data)
 
     try:
         os.makedirs('output')
