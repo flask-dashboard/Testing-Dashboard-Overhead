@@ -8,14 +8,14 @@ import time
 import urllib2
 
 
-def parse_host():
-    """ Returns the host (as a string) from the script argument. """
+def parse_args():
+    """ Returns the host (as a string) and the name from the script arguments. """
     try:
-        return sys.argv[1]
+        return sys.argv[1], sys.argv[2]
     except Exception as e:
         print('Got exception: {}'.format(e))
-        print('Usage: {} {{Host}}'.format(sys.argv[0]))
-        print('Given: {} {}'.format(sys.argv[0], sys.argv[1]))
+        print('Usage: {} {{Host}} {{Name}}'.format(sys.argv[0]))
+        print('Given: {} {} {}'.format(sys.argv[0], sys.argv[1], sys.argv[2]))
         sys.exit(1)
 
 
@@ -44,7 +44,7 @@ def measure_execution_time(host, page, n=100):
     return data
 
 if __name__ == '__main__':
-    host = parse_host()
+    host, name = parse_args()
     sleep_until_ready(host)
     print('Ready for the real testing')
 
@@ -52,6 +52,6 @@ if __name__ == '__main__':
     data = measure_execution_time(host, page)
     print(data)
 
-    with open('{}.txt'.format(host), 'w') as file:
+    with open('{}.txt'.format(name), 'w') as file:
         for line in data:
             file.write(line + '\n')
