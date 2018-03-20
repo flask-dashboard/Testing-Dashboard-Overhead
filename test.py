@@ -31,14 +31,13 @@ def sleep_until_ready(host):
             print('Waiting for {} seconds to boot up'.format(time.time() - now))
 
 
-def measure_execution_time(host, page, n):
+def measure_execution_time(host, page, n=100):
     """ Call a certain page n times and returns the execution time (in ms) """
     data = []
     for _ in range(n):
         now = time.time()
         try:
             urllib2.urlopen(host + page, timeout=1)
-            return
         except Exception:
             print('Can\'t open url {}{}'.format(host, page) )
         data.append((time.time() - now) * 1000)
@@ -50,6 +49,9 @@ if __name__ == '__main__':
     print('Ready for the real testing')
 
     page = 'available_languages'
-    n = 100
-    data = measure_execution_time(host, page, n)
+    data = measure_execution_time(host, page)
     print(data)
+
+    with open('{}.txt'.format(host), 'w') as file:
+        for line in data:
+            file.write(line + '\n')

@@ -1,0 +1,5 @@
+TODO List:
+
+- Enable monitoring of endpoints in Dashboard (Automatically)
+- Update which endpoints are being monitored
+- Automatically compare the results of both output-files

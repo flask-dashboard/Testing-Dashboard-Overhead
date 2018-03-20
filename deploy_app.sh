@@ -45,6 +45,8 @@ cd ..
 # Install Zeeguu-API
 git clone https://github.com/zeeguu-ecosystem/Zeeguu-API
 cd Zeeguu-API
+sed -i -e "s/dashboard_enabled = True/dashboard_enabled = $1/g" zeeguu_api/app.py
+cat zeeguu_api/app.py
 pip3.6 install flask-cors --upgrade
 if [ "$1" == "True" ]; then
 	echo "Installing Flask-MonitoringDashboard"
@@ -52,7 +54,6 @@ if [ "$1" == "True" ]; then
 else
 	echo "Skipping Flask-MonitoringDashboard"
 fi
-pip3.6 list
 python3.6 setup.py develop
 ./run_tests.sh
 ./api_test.sh
