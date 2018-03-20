@@ -33,7 +33,6 @@ cd ..
 
 
 
-
 # Install Python-Translators
 git clone https://github.com/zeeguu-ecosystem/Python-Translators
 cd Python-Translators
