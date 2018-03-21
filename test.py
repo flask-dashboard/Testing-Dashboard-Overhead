@@ -5,7 +5,7 @@ Run this script for making a number of requests to the webservice
 import sys
 import requests
 import time
-from urllib.request import urlopen
+from urllib2
 from util import parse_args, save_result
 from bs4 import BeautifulSoup
 
@@ -15,7 +15,7 @@ def sleep_until_ready(host):
     now = time.time()
     while True:
         try:
-            urlopen(host + 'available_languages', timeout=1)
+            urllib.urlopen(host + 'available_languages', timeout=1)
             return
         except Exception:
             time.sleep(1)
@@ -37,6 +37,9 @@ def monitor_all_endpoints(host):
 
     client.post(url_login, data=login_data, headers=dict(Referer=url_login))
     client.get(url_rules)
+
+    rules_data = dict()
+    client.post(url_rules, data=rules_data, headers=dict(Referer=url_rules))
 
 
 def measure_execution_time(host, page, n=100):
