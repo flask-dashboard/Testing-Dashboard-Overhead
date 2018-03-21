@@ -5,7 +5,7 @@ Run this script for making a number of requests to the webservice
 import sys
 import requests
 import time
-from urllib2
+import urllib2
 from util import parse_args, save_result
 from bs4 import BeautifulSoup
 
@@ -19,7 +19,7 @@ def sleep_until_ready(host):
             return
         except Exception:
             time.sleep(1)
-            sys.stdout.write('\rWaiting for {} seconds to boot up'.format(time.time() - now))
+            sys.stdout.write('\rWaiting for {} seconds to boot up'.format(int(time.time() - now)))
             sys.stdout.flush()
 
 
@@ -60,9 +60,12 @@ def measure_execution_time(host, page, n=100):
 if __name__ == '__main__':
     host, name = parse_args()
     sleep_until_ready(host)
-    print('Host is up.\nEnabling monitoring of all endpoints...')
-    monitor_all_endpoints(host)
-    print('All endpoints are now monitored.\nTesting the overhead now...')
+    print('Host is up.')
+    if name == 'with_dashboard':
+        print('Enabling monitoring of all endpoints...')
+        monitor_all_endpoints(host)
+        print('All endpoints are now monitored.')
+    print('Testing the overhead now...')
     data = measure_execution_time(host, page='available_languages')
     save_result(data, name + '.txt')
     print('Results saved.')
