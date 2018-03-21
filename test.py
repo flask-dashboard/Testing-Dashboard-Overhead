@@ -5,9 +5,9 @@ Run this script for making a number of requests to the webservice
 import sys
 import requests
 import time
-import sqlite3
-import urllib2
+from urllib.request import urlopen
 from util import parse_args, save_result
+from bs4 import BeautifulSoup
 
 
 def sleep_until_ready(host):
@@ -15,7 +15,7 @@ def sleep_until_ready(host):
     now = time.time()
     while True:
         try:
-            urllib2.urlopen(host + 'available_languages', timeout=1)
+            urlopen(host + 'available_languages', timeout=1)
             return
         except Exception:
             time.sleep(1)
@@ -23,42 +23,20 @@ def sleep_until_ready(host):
             sys.stdout.flush()
 
 
-def monitor_all_endpoints(host, db):
+def monitor_all_endpoints(host):
     """ Enables the monitoring of all endpoints."""
+    url_login = host + 'dashboard/login'
+    url_rules = host + 'dashboard/rules'
 
     client = requests.session()
-    client.get(host + 'dashboard/login')
-    for cookie in client.cookies:
-        print(cookie)
+    html = client.get(url_login)
 
-    # headers = {'User-Agent': 'Mozilla/5.0'}
-    # payload = {'name':'admin','password':'admin', 'submit':'Login'}
-    # session = requests.Session()
-    # resp    = session.get(host + "dashboard/login", headers=headers)
-    # cookies = requests.utils.cookiejar_from_dict(requests.utils.dict_from_cookiejar(session.cookies))
-    # resp    = session.post(host + "dashboard/login", headers=headers, data=payload, cookies=cookies)
-    # r = session.get(host + "dashboard/rules")
-    # print(r.text)
-    # print(r.status_code)
+    parsed_html = BeautifulSoup(html.text, "html.parser")
+    token = parsed_html.body.find(id='csrf_token')['value']
+    login_data = dict(csrf_token=token, name='admin', password='admin', submit='Login')
 
-    # with requests.Session() as s:
-    #     r = s.post(host + "dashboard/login", data={
-    #         'csrf_token': 'ImQ3OWM3MWM4MmRjZTJjMDgyZTRjZDg2MDgzOTdlZjkwNWQ5YmQzODIi.DZQ7MA.pj8ZZ5ENoVvUYRvbyqOs1biairY',
-    #         'name': 'admin',
-    #         'password': 'admin',
-    #         'submit': 'Login'})
-    #     print(r.text)
-    #     r = s.get(host + "dashboard/rules")
-    #     print(r.text)
-    try:
-        conn = sqlite3.connect(db)
-        c = conn.cursor()
-        c.execute("UPDATE rules SET monitor = 1")
-        conn.commit()
-        conn.close()
-    except Exception as e:
-        print('Could not enable the monitoring of all endpoints.')
-        print(e)
+    client.post(url_login, data=login_data, headers=dict(Referer=url_login))
+    client.get(url_rules)
 
 
 def measure_execution_time(host, page, n=100):
@@ -77,7 +55,7 @@ if __name__ == '__main__':
     host, name = parse_args()
     sleep_until_ready(host)
     print('Host is up.\nEnabling monitoring of all endpoints...')
-    monitor_all_endpoints(host, db='/Zeeguu-API/flask_monitoringdashboard.db')
+    monitor_all_endpoints(host)
     print('All endpoints are now monitored.\nTesting the overhead now...')
     data = measure_execution_time(host, page='available_languages')
     save_result(data, name + '.txt')
