@@ -36,9 +36,12 @@ def monitor_all_endpoints(host):
     login_data = dict(csrf_token=token, name='admin', password='admin', submit='Login')
 
     client.post(url_login, data=login_data, headers=dict(Referer=url_login))
-    client.get(url_rules)
+    html = client.get(url_rules)
 
-    rules_data = dict()
+    parsed_html = BeautifulSoup(html.text, "html.parser")
+    token = parsed_html.body.find(id='csrf_token')['value']
+    rules_data = dict(csrf_token=token, data='checkbox-api.available_languages')
+
     client.post(url_rules, data=rules_data, headers=dict(Referer=url_rules))
 
 
