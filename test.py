@@ -25,6 +25,15 @@ def sleep_until_ready(host):
 
 def monitor_all_endpoints(db):
     """ Enables the monitoring of all endpoints."""
+    with requests.Session() as s:
+        r = s.post("0.0.0.0:9001/dashboard/login", data={
+            'csrf_token': 'ImQ3OWM3MWM4MmRjZTJjMDgyZTRjZDg2MDgzOTdlZjkwNWQ5YmQzODIi.DZQ7MA.pj8ZZ5ENoVvUYRvbyqOs1biairY',
+            'name': 'admin',
+            'password': 'admin',
+            'submit': 'Login'})
+        print(r.text)
+        r = s.get("0.0.0.0:9001/dashboard/rules")
+        print(r.text)
     try:
         conn = sqlite3.connect(db)
         c = conn.cursor()
