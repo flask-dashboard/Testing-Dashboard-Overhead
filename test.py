@@ -25,15 +25,26 @@ def sleep_until_ready(host):
 
 def monitor_all_endpoints(host, db):
     """ Enables the monitoring of all endpoints."""
-    with requests.Session() as s:
-        r = s.post(host + "dashboard/login", data={
-            'csrf_token': 'ImQ3OWM3MWM4MmRjZTJjMDgyZTRjZDg2MDgzOTdlZjkwNWQ5YmQzODIi.DZQ7MA.pj8ZZ5ENoVvUYRvbyqOs1biairY',
-            'name': 'admin',
-            'password': 'admin',
-            'submit': 'Login'})
-        print(r.text)
-        r = s.get(host + "dashboard/rules")
-        print(r.text)
+
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    payload = {'name':'admin','password':'admin', 'submit':'Login'}
+    session = requests.Session()
+    resp    = session.get(host + "dashboard/login", headers=headers)
+    cookies = requests.utils.cookiejar_from_dict(requests.utils.dict_from_cookiejar(session.cookies))
+    resp    = session.post(host + "dashboard/login", headers=headers, data=payload, cookies=cookies)
+    r = session.get(host + "dashboard/rules")
+    print(r.text)
+    print(r.status_code)
+
+    # with requests.Session() as s:
+    #     r = s.post(host + "dashboard/login", data={
+    #         'csrf_token': 'ImQ3OWM3MWM4MmRjZTJjMDgyZTRjZDg2MDgzOTdlZjkwNWQ5YmQzODIi.DZQ7MA.pj8ZZ5ENoVvUYRvbyqOs1biairY',
+    #         'name': 'admin',
+    #         'password': 'admin',
+    #         'submit': 'Login'})
+    #     print(r.text)
+    #     r = s.get(host + "dashboard/rules")
+    #     print(r.text)
     try:
         conn = sqlite3.connect(db)
         c = conn.cursor()
