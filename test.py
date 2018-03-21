@@ -23,16 +23,16 @@ def sleep_until_ready(host):
             sys.stdout.flush()
 
 
-def monitor_all_endpoints(db):
+def monitor_all_endpoints(host, db):
     """ Enables the monitoring of all endpoints."""
     with requests.Session() as s:
-        r = s.post("0.0.0.0:9001/dashboard/login", data={
+        r = s.post(host + "dashboard/login", data={
             'csrf_token': 'ImQ3OWM3MWM4MmRjZTJjMDgyZTRjZDg2MDgzOTdlZjkwNWQ5YmQzODIi.DZQ7MA.pj8ZZ5ENoVvUYRvbyqOs1biairY',
             'name': 'admin',
             'password': 'admin',
             'submit': 'Login'})
         print(r.text)
-        r = s.get("0.0.0.0:9001/dashboard/rules")
+        r = s.get(host + "dashboard/rules")
         print(r.text)
     try:
         conn = sqlite3.connect(db)
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     host, name = parse_args()
     sleep_until_ready(host)
     print('Host is up.\nEnabling monitoring of all endpoints...')
-    monitor_all_endpoints('/Zeeguu-API/flask_monitoringdashboard.db')
+    monitor_all_endpoints(host, db='/Zeeguu-API/flask_monitoringdashboard.db')
     print('All endpoints are now monitored.\nTesting the overhead now...')
     data = measure_execution_time(host, page='available_languages')
     save_result(data, name + '.txt')
