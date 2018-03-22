@@ -18,6 +18,15 @@ def sleep_until_ready(host):
             sys.stdout.flush()
 
 
+def check_configuration(host, dashboard_enabled):
+    """ Verifies that the dashboard is correctly enabled/disabled """
+    r = requests.get(host + 'dashboard/login')
+    if dashboard_enabled:
+        return r.status_code == 200
+    else:
+        return r.status_code == 404
+
+
 def monitor_all_endpoints(host):
     """ Enables the monitoring of all endpoints."""
     url_login = host + 'dashboard/login'
@@ -42,14 +51,18 @@ def monitor_all_endpoints(host):
     client.post(url_rules, data=rules_data, headers=dict(Referer=url_rules))
 
 
-def measure_execution_time(host, page, n=100):
+def measure_execution_time(host, page, n):
     """ Call a certain page n times and returns the execution time (in ms) """
     data = []
-    for _ in range(n):
+    for i in range(n):
         now = time.time()
         try:
             requests.get(host + page)
         except Exception:
             print('Can\'t open url {}{}'.format(host, page))
-        data.append((time.time() - now) * 1000)
+        duration = (time.time() - now) * 1000
+        data.append(duration)
+        sys.stdout.write('\r({}/{}) Measuring page "{}": {} ms'.format(i+1, n, page, duration))
+        sys.stdout.flush()
+    print('')
     return data

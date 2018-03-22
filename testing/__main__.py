@@ -2,13 +2,21 @@
 Run this script for making a number of requests to the webservice
 """
 
-from .util import parse_args, save_result
-from .test import sleep_until_ready, measure_execution_time
+from .util import parse_args
+from .test import sleep_until_ready, check_configuration, monitor_all_endpoints
+from .test_procedure import test_procedure
 
 if __name__ == '__main__':
     host, name = parse_args()
     sleep_until_ready(host)
-    print('Ready for testing the webservice')
 
-    data = measure_execution_time(host, page='available_languages')
-    save_result(data, name + '.txt')
+    dashboard_enabled = name == "with_dashboard"
+    if not check_configuration(host, dashboard_enabled):
+        raise Exception('Incorrectly configured {}'.format(name))
+
+    if dashboard_enabled:
+        monitor_all_endpoints(host)
+
+    print('Ready for testing the webservice')
+    test_procedure(host=host, name=name)
+    print('Done with testing webservice: {}'.format(name))

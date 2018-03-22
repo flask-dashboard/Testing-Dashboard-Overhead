@@ -25,10 +25,10 @@ def make_directory(name):
         print(e)
 
 
-def save_result(data, name):
+def save_result(data, name, page):
     """ Saves the result in a file """
     make_directory('output')
 
-    with open('output/{}'.format(name), 'w') as file:
+    with open('output/{}-{}'.format(name, page), 'w') as file:
         for line in data:
             file.write(str(line) + '\n')
