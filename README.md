@@ -1,15 +1,19 @@
 # Dashboard-overhead
 This is a repository for investigating the overhead of the [Flask-MonitoringDashboard](https://github.com/flask-dashboard/Flask-MonitoringDashboard).
 
+## How to install?
+Make sure that you've installed [docker](https://docs.docker.com/install/).
+Furthermore, install the right Python packages using:
+```
+pip install -r requirements.txt
+``` 
+
+
 ## How to run?
 Run the following command for executing the script:
 ```
 ./deploy.sh
 ```
-Make sure that you've met the following requirements:
-- Install the packages that the python script needs. This are:
-  - requests
-  - bs4
   
 ## How does it work?
 The Flask application is deployed within a [Docker-image](https://hub.docker.com/_/python/).
@@ -18,7 +22,3 @@ This tries to produce two equivalent execution environments. In one environment 
 
 The difference in results is assumed to be due to the Dashboard.
 
-## What is left ToDo:
-1. Enable monitoring of endpoints in Dashboard (Automatically)
-2. Determine which (and how often) endpoints are tested?
-3. Automatically compare the results of both output-files

@@ -1,11 +1,8 @@
 
 import sys
 import time
-import urllib2
 import requests
 from bs4 import BeautifulSoup
-
-from util import parse_args, save_result
 
 
 def sleep_until_ready(host):

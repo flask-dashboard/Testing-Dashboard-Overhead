@@ -12,4 +12,4 @@ RUN apt-get install -y git wget python3-venv python3.6-dev build-essential check
 ARG dashboard
 ENV dashboard=$dashboard
 
-CMD ./deploy_app.sh $dashboard
+CMD ./start_webservice.sh $dashboard

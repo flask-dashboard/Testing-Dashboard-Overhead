@@ -1,5 +1,7 @@
 #!/bin/bash
 # This script installs the right dependencies and starts the web service.
+# The argument for this script is either 'True' or 'False', depending whether you would like to install the Flask-MonitoringDashboard
+
 
 # MSQL Settings
 debconf-set-selections <<< 'mysql-server-5.7 mysql-server/root_password password password'
@@ -39,12 +41,12 @@ cd Zeeguu-API
 sed -i -e "s/dashboard_enabled = True/dashboard_enabled = $1/g" zeeguu_api/app.py
 cat zeeguu_api/app.py
 pip3.6 install flask-cors --upgrade
-if [ "$1" == "True" ]; then
-	echo "Installing Flask-MonitoringDashboard"
-	pip3.6 install flask_monitoringdashboard
-else
-	echo "Skipping Flask-MonitoringDashboard"
-fi
+# if [ "$1" == "True" ]; then
+# 	echo "Installing Flask-MonitoringDashboard"
+# 	pip3.6 install flask_monitoringdashboard
+# else
+# 	echo "Skipping Flask-MonitoringDashboard"
+# fi
 python3.6 setup.py develop
 ./run_tests.sh
 ./api_test.sh

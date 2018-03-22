@@ -11,17 +11,17 @@ docker build -t webservice .
 # Deploy webservice with the Dashboard
 echo "Deploy the webservice with the dashboard"
 docker run -d --name app_with_dashboard -p 9001:9001 -e dashboard=True webservice
-python -m testing http://localhost:9001/ with_dashboard
+# python -m testing http://localhost:9001/ with_dashboard
 
-# Stop previous container
-docker stop $(docker ps -aq)
-docker rm $(docker ps -aq)
+# # Stop previous container
+# docker stop $(docker ps -aq)
+# docker rm $(docker ps -aq)
 
-# Deploy webservice without the Dashboard
-echo "Deploy the webservice without the dashboard"
-docker run -d --name app_without_dashboard -p 9001:9001 -e dashboard=False webservice
-python -m testing http://localhost:9001/ without_dashboard
+# # Deploy webservice without the Dashboard
+# echo "Deploy the webservice without the dashboard"
+# docker run -d --name app_without_dashboard -p 9001:9001 -e dashboard=False webservice
+# python -m testing http://localhost:9001/ without_dashboard
 
-# Stop all containers
-docker stop $(docker ps -aq)
-docker rm $(docker ps -aq)
+# # Stop all containers
+# docker stop $(docker ps -aq)
+# docker rm $(docker ps -aq)
