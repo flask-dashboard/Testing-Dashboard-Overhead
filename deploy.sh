@@ -5,7 +5,7 @@ echo "Stop and remove running containers"
 docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
 
-Build the webservice
+# Build the webservice
 docker build -t webservice .
 
 # Deploy webservice with the Dashboard
