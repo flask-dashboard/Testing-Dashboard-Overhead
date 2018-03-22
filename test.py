@@ -5,7 +5,6 @@ Run this script for making a number of requests to the webservice
 import sys
 import requests
 import time
-import urllib2
 from util import parse_args, save_result
 from bs4 import BeautifulSoup
 
@@ -15,7 +14,7 @@ def sleep_until_ready(host):
     now = time.time()
     while True:
         try:
-            urllib2.urlopen(host + 'available_languages', timeout=1)
+            requests.get(host + 'available_languages')
             return
         except Exception:
             time.sleep(1)
@@ -38,13 +37,12 @@ def monitor_all_endpoints(host):
     client.post(url_login, data=login_data, headers=dict(Referer=url_login))
     html = client.get(url_rules)
 
-    # parsed_html = BeautifulSoup(html.text, "html.parser")
-    # token = parsed_html.body.find(id='csrf_token')['value']
-    # rules_data = dict(csrf_token=token, data='checkbox-api.available_languages')
-    rules_data = {'data':'checkbox-api.available_languages'}
+    parsed_html = BeautifulSoup(html.text, "html.parser")
+    token = parsed_html.body.find(id='csrf_token')['value']
+    rules_data = {'csrf_token':token, 'checkbox-api.available_languages':'on'}
 
     r = client.post(url_rules, json=rules_data, headers=dict(Referer=url_rules))
-    print(r.text)
+    print(r.text[:5000])
     print(r.status_code)
 
 
