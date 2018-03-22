@@ -38,11 +38,12 @@ def monitor_all_endpoints(host):
     client.post(url_login, data=login_data, headers=dict(Referer=url_login))
     html = client.get(url_rules)
 
-    parsed_html = BeautifulSoup(html.text, "html.parser")
-    token = parsed_html.body.find(id='csrf_token')['value']
-    rules_data = dict(csrf_token=token, data='checkbox-api.available_languages')
+    # parsed_html = BeautifulSoup(html.text, "html.parser")
+    # token = parsed_html.body.find(id='csrf_token')['value']
+    # rules_data = dict(csrf_token=token, data='checkbox-api.available_languages')
+    rules_data = {'data':'checkbox-api.available_languages'}
 
-    r = client.post(url_rules, data=rules_data, headers=dict(Referer=url_rules))
+    r = client.post(url_rules, json=rules_data, headers=dict(Referer=url_rules))
     print(r.text)
     print(r.status_code)
 

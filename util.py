@@ -29,11 +29,6 @@ def save_result(data, name):
     """ Saves the result in a file """
     make_directory('output')
 
-    try:
-        os.remove('output/{}'.format(name))
-    except Exception as e:
-        print(e)
-        
     with open('output/{}'.format(name), 'w') as file:
         for line in data:
             file.write(str(line) + '\n')
