@@ -8,7 +8,7 @@ Run the following command for executing the script:
 ```
 Make sure that you've met the following requirements:
 - make 'deploy.sh' executable ($ chmod 777 deploy.sh)
-- install package 'requests' for python3 ($ pip3 install requests)
+- install packages 'requests' and 'bs4' for python3 ($ pip3 install requests) ($ pip3 install bs4)
 
 ## How does it work?
 The Flask application is deployed within a [Docker-image](https://hub.docker.com/_/python/).
