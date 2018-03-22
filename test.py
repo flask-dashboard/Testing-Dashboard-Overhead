@@ -27,23 +27,23 @@ def monitor_all_endpoints(host):
     url_login = host + 'dashboard/login'
     url_rules = host + 'dashboard/rules'
 
+    # Login to the dashboard
     client = requests.session()
     html = client.get(url_login)
-
     parsed_html = BeautifulSoup(html.text, "html.parser")
     token = parsed_html.body.find(id='csrf_token')['value']
     login_data = dict(csrf_token=token, name='admin', password='admin', submit='Login')
-
     client.post(url_login, data=login_data, headers=dict(Referer=url_login))
-    html = client.get(url_rules)
 
+    # Turn on monitoring for all rules
+    html = client.get(url_rules)
     parsed_html = BeautifulSoup(html.text, "html.parser")
     token = parsed_html.body.find(id='csrf_token')['value']
-    rules_data = {'csrf_token':token, 'checkbox-api.available_languages':'on'}
+    rules_data = {'csrf_token': token}
+    for endpoint in parsed_html.findAll('table')[0].findAll('tr')[1:]:
+        rules_data[endpoint.find('label')['for']] = 'on'
 
-    r = client.post(url_rules, json=rules_data, headers=dict(Referer=url_rules))
-    print(r.text[:5000])
-    print(r.status_code)
+    client.post(url_rules, data=rules_data, headers=dict(Referer=url_rules))
 
 
 def measure_execution_time(host, page, n=100):
@@ -52,11 +52,12 @@ def measure_execution_time(host, page, n=100):
     for _ in range(n):
         now = time.time()
         try:
-            urllib2.urlopen(host + page, timeout=1)
+            requests.get(host + page)
         except Exception:
             print('Can\'t open url {}{}'.format(host, page) )
         data.append((time.time() - now) * 1000)
     return data
+
 
 if __name__ == '__main__':
     host, name = parse_args()
