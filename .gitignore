@@ -103,4 +103,5 @@ ENV/
 # Output files
 output/*
 
-*.idea
+# idea
+.idea
