@@ -16,3 +16,4 @@ def test_procedure(host, name):
     """ The actual test procedure """
 
     test_and_save(host, name, 'available_languages')
+    test_and_save(host, name, 'available_native_languages')
