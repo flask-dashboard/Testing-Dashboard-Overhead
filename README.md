@@ -8,8 +8,9 @@ Run the following command for executing the script:
 ```
 Make sure that you've met the following requirements:
 - Install the packages that the python script needs. This are:
-  - urllib2
-
+  - requests
+  - bs4
+  
 ## How does it work?
 The Flask application is deployed within a [Docker-image](https://hub.docker.com/_/python/).
 
