@@ -15,7 +15,7 @@ def sleep_until_ready(host):
     now = time.time()
     while True:
         try:
-            urllib.urlopen(host + 'available_languages', timeout=1)
+            urllib2.urlopen(host + 'available_languages', timeout=1)
             return
         except Exception:
             time.sleep(1)
@@ -61,10 +61,10 @@ if __name__ == '__main__':
     host, name = parse_args()
     sleep_until_ready(host)
     print('Host is up.')
-    # if name == 'with_dashboard':
-    #     print('Enabling monitoring of all endpoints...')
-    #     monitor_all_endpoints(host)
-    #     print('All endpoints are now monitored.')
+    if name == 'with_dashboard':
+        print('Enabling monitoring of all endpoints...')
+        monitor_all_endpoints(host)
+        print('All endpoints are now monitored.')
     print('Testing the overhead now...')
     data = measure_execution_time(host, page='available_languages')
     save_result(data, name + '.txt')
