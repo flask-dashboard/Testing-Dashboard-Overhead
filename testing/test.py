@@ -1,12 +1,7 @@
-"""
-Run this script for making a number of requests to the webservice
-"""
 
 import sys
-import requests
 import time
 import urllib2
-from util import parse_args, save_result
 
 
 def sleep_until_ready(host):
@@ -30,14 +25,7 @@ def measure_execution_time(host, page, n=100):
         try:
             urllib2.urlopen(host + page, timeout=1)
         except Exception:
-            print('Can\'t open url {}{}'.format(host, page) )
+            print('Can\'t open url {}{}'.format(host, page))
         data.append((time.time() - now) * 1000)
     return data
 
-if __name__ == '__main__':
-    host, name = parse_args()
-    sleep_until_ready(host)
-    print('Ready for testing the webservice')
-
-    data = measure_execution_time(host, page='available_languages')
-    save_result(data, name + '.txt')

@@ -7,8 +7,8 @@ Run the following command for executing the script:
 ./deploy.sh
 ```
 Make sure that you've met the following requirements:
-- make 'deploy.sh' executable ($ chmod 777 deploy.sh)
-- install package 'requests' for python3 ($ pip3 install requests)
+- Install the packages that the python script needs. This are:
+  - urllib2
 
 ## How does it work?
 The Flask application is deployed within a [Docker-image](https://hub.docker.com/_/python/).
