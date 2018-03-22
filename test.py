@@ -42,7 +42,9 @@ def monitor_all_endpoints(host):
     token = parsed_html.body.find(id='csrf_token')['value']
     rules_data = dict(csrf_token=token, data='checkbox-api.available_languages')
 
-    client.post(url_rules, data=rules_data, headers=dict(Referer=url_rules))
+    r = client.post(url_rules, data=rules_data, headers=dict(Referer=url_rules))
+    print(r.text)
+    print(r.status_code)
 
 
 def measure_execution_time(host, page, n=100):
@@ -60,7 +62,7 @@ def measure_execution_time(host, page, n=100):
 if __name__ == '__main__':
     host, name = parse_args()
     sleep_until_ready(host)
-    print('Host is up.')
+    print('\nHost is up.')
     if name == 'with_dashboard':
         print('Enabling monitoring of all endpoints...')
         monitor_all_endpoints(host)
