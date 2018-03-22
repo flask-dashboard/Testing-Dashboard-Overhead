@@ -2,8 +2,8 @@
 This file contains a number of helper functions
 """
 
-import sys
 import os
+import sys
 
 
 def parse_args():

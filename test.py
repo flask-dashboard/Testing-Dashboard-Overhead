@@ -3,10 +3,12 @@ Run this script for making a number of requests to the webservice
 """
 
 import sys
-import requests
 import time
-from util import parse_args, save_result
+
+import requests
 from bs4 import BeautifulSoup
+
+from util import parse_args, save_result
 
 
 def sleep_until_ready(host):
@@ -54,7 +56,7 @@ def measure_execution_time(host, page, n=100):
         try:
             requests.get(host + page)
         except Exception:
-            print('Can\'t open url {}{}'.format(host, page) )
+            print('Can\'t open url {}{}'.format(host, page))
         data.append((time.time() - now) * 1000)
     return data
 
