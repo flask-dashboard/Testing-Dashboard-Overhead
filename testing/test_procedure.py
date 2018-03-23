@@ -17,3 +17,4 @@ def test_procedure(host, name):
 
     test_and_save(host, name, 'available_languages')
     test_and_save(host, name, 'available_native_languages')
+    test_and_save(host, name, 'ping')
