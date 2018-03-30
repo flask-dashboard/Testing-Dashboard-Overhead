@@ -38,13 +38,14 @@ cd ..
 # Install Zeeguu-API
 git clone https://github.com/zeeguu-ecosystem/Zeeguu-API
 cd Zeeguu-API
-python3.6 setup.py install
 pip3.6 install flask-cors --upgrade
 if [ "$1" == "False" ]; then
+	pip uninstall Flask-MonitoringDashboard
 	echo "Skipping Flask-MonitoringDashboard by removing every line that contains 'dashboard'"
 	cd zeeguu_api
 	sed -i "/\b\(dashboard\)\b/d" app.py
 	cd ..
 fi
+python3.6 setup.py install
 ./run_tests.sh
 ./api_test.sh
