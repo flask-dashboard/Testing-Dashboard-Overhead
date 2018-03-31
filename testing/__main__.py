@@ -6,6 +6,7 @@ from .util import parse_args
 from .test import sleep_until_ready, check_configuration, monitor_all_endpoints
 from .test_procedure import test_procedure
 
+
 if __name__ == '__main__':
     host, name = parse_args()
     sleep_until_ready(host)
