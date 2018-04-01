@@ -51,18 +51,19 @@ def monitor_all_endpoints(host):
     client.post(url_rules, data=rules_data, headers=dict(Referer=url_rules))
 
 
-def measure_execution_time(host, page, n):
+def measure_execution_time(host, page, n, method='get', data=None):
     """ Call a certain page n times and returns the execution time (in ms) """
-    data = []
+    result = []
     for i in range(n):
         now = time.time()
         try:
-            requests.get(host + page)
-        except Exception:
-            print('Can\'t open url {}{}'.format(host, page))
+            r = requests.Request(method, host + page, data=data).prepare()
+            s = requests.Session()
+            print(s.send(r).text)
+        except Exception as e:
+            print('Exception for page {}: {}'.format(page, e))
         duration = (time.time() - now) * 1000
-        data.append(duration)
-        sys.stdout.write('\r({}/{}) Measuring page "{}": {} ms'.format(i+1, n, page, duration))
-        sys.stdout.flush()
-    print('')
-    return data
+        result.append(duration)
+    print('Measuring page "{}": {} ms'.format(page, sum(result)/len(result)))
+    return result
+

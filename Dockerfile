@@ -11,5 +11,9 @@ RUN apt-get install -y git wget python3-venv python3.6-dev build-essential check
 
 ARG dashboard
 ENV dashboard=$dashboard
+ARG google
+ENV google=$google
+ARG microsoft
+ENV microsoft=$microsoft
 
-CMD ./start_webservice.sh $dashboard
+CMD ./start_webservice.sh $dashboard $google $microsoft

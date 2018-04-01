@@ -12,7 +12,7 @@ def parse_args():
         return sys.argv[1], sys.argv[2]
     except Exception as e:
         print('Got exception: {}'.format(e))
-        print('Usage: {} {{Host}} {{Name}}'.format(sys.argv[0]))
+        print('Usage: {} {{Host}} {{Container-name}}'.format(sys.argv[0]))
         print('Given: {} {} {}'.format(sys.argv[0], sys.argv[1], sys.argv[2]))
         sys.exit(1)
 
