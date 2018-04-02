@@ -44,7 +44,7 @@ cd Zeeguu-API
 
 #configure dashboard
 export DASHBOARD_CONFIG="./config.cfg"
-echo "[dashboard]" >> .config.cfg
+echo "[dashboard]" >> ./config.cfg
 echo "OUTLIER_DETECTION_CONSTANT=$2" >> ./config.cfg
 cat ./config.cfg
 
