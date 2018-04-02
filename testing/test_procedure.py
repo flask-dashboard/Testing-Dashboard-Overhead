@@ -37,10 +37,3 @@ def test_procedure(host, name):
     build.test_and_save('user_articles', args='/recommended?session=12345')
     build.test_and_save('recommended_feeds', args='/4?session=12345')
     build.test_and_save('user_article', args='?session=12345&url=http%3A%2F%2Fwww.nu.nl')
-    data = {
-        'context': 'The sentence in which a certain word occurs.',
-        'url': 'articleURL=1234',
-        'word': 'sentence',
-        'title': 'title of the article'
-    }
-    build.test_and_save('get_possible_translations', args='/en/nl?session=12345', method='post', data=data)

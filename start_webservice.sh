@@ -2,9 +2,9 @@
 # This script installs the right dependencies and starts the web service.
 # The argument for this script are the following
 #  - $1: either 'True' or 'False', depending whether you would like to install the Flask-MonitoringDashboard
-#  - $2: a string for the google_translate_api_key
-#  - $3: a string for the microsoft_translate_api_key
-
+#  - $2: the outlier_detection_constant (must be an integer)
+echo "1: $1"
+echo "2: $2"
 
 # MSQL Settings
 debconf-set-selections <<< 'mysql-server-5.7 mysql-server/root_password password password'
@@ -32,8 +32,6 @@ python3.6 -m zeeguu.populate
 cd ..
 
 # Install Python-Translators
-export GOOGLE_TRANSLATE_API_KEY="$2"
-export MICROSOFT_TRANSLATE_API_KEY="$3"
 git clone https://github.com/zeeguu-ecosystem/Python-Translators
 cd Python-Translators
 pip install -r requirements.txt
@@ -43,6 +41,13 @@ cd ..
 # Install Zeeguu-API
 git clone https://github.com/zeeguu-ecosystem/Zeeguu-API
 cd Zeeguu-API
+
+#configure dashboard
+export DASHBOARD_CONFIG="./config.cfg"
+echo "[dashboard]" >> .config.cfg
+echo "OUTLIER_DETECTION_CONSTANT=$2" >> ./config.cfg
+cat ./config.cfg
+
 pip3.6 install flask-cors --upgrade
 if [ "$1" == "False" ]; then
 	pip uninstall Flask-MonitoringDashboard
