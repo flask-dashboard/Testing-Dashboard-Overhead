@@ -55,15 +55,15 @@ def measure_execution_time(host, page, n, method='get', data=None):
     """ Call a certain page n times and returns the execution time (in ms) """
     result = []
     for i in range(n):
-        now = time.time()
         try:
             r = requests.Request(method, host + page, data=data).prepare()
             s = requests.Session()
-            print(s.send(r).text)
+            now = time.time()
+            s.send(r)
+            duration = (time.time() - now) * 1000
+            result.append(duration)
         except Exception as e:
             print('Exception for page {}: {}'.format(page, e))
-        duration = (time.time() - now) * 1000
-        result.append(duration)
     print('Measuring page "{}": {} ms'.format(page, sum(result)/len(result)))
     return result
 

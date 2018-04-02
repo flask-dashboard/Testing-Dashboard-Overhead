@@ -14,11 +14,13 @@ class Builder(object):
         self._host = host
         self._name = name
 
-    def test_and_save(self, page, n=100, args=None, method='get', data=None):
+    def test_and_save(self, page, n=500, args=None, method='get', data=None):
         """ Shorthand for testing and storing the result"""
         page2 = page
         if args:
             page2 = page2 + args
+        # Call the endpoint 100 times to avoid initialization of Flask
+        measure_execution_time(host=self._host, page=page2, n=100, method=method, data=data)
         result = measure_execution_time(host=self._host, page=page2, n=n, method=method, data=data)
         save_result(result, name=self._name, page=page)
 
@@ -28,17 +30,17 @@ def test_procedure(host, name):
 
     build = Builder(host, name)
 
-    build.test_and_save('available_languages', n=1
-                        )
-    # build.test_and_save('available_native_languages')
-    # build.test_and_save('ping')
+    build.test_and_save('available_languages')
+    build.test_and_save('available_native_languages')
+    build.test_and_save('ping')
     init_session(name)
-    # build.test_and_save('user_articles', args='/recommended?session=12345')
-    # build.test_and_save('user_article', args='?session=12345&url=http%3A%2F%2Fwww.nu.nl')
+    build.test_and_save('user_articles', args='/recommended?session=12345')
+    build.test_and_save('recommended_feeds', args='/4?session=12345')
+    build.test_and_save('user_article', args='?session=12345&url=http%3A%2F%2Fwww.nu.nl')
     data = {
         'context': 'The sentence in which a certain word occurs.',
         'url': 'articleURL=1234',
         'word': 'sentence',
         'title': 'title of the article'
     }
-    build.test_and_save('get_possible_translations', args='/en/nl?session=12345', method='post', n=1, data=data)
+    build.test_and_save('get_possible_translations', args='/en/nl?session=12345', method='post', data=data)
