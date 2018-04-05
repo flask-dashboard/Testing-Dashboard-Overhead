@@ -11,7 +11,7 @@ if __name__ == '__main__':
     host, name = parse_args()
     sleep_until_ready(host)
 
-    dashboard_enabled = name == "with_dashboard"
+    dashboard_enabled = name != "without_dashboard"
     if not check_configuration(host, dashboard_enabled):
         raise Exception('Incorrectly configured {}'.format(name))
 

@@ -37,3 +37,4 @@ def test_procedure(host, name):
     build.test_and_save('user_articles', args='/recommended?session=12345')
     build.test_and_save('recommended_feeds', args='/4?session=12345')
     build.test_and_save('user_article', args='?session=12345&url=http%3A%2F%2Fwww.nu.nl')
+    build.test_and_save('create_default_exercises', args='?session=12345')
