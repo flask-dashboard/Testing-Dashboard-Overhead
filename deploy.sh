@@ -26,7 +26,7 @@ docker run -d --name with_dashboard_but_no_outliers -p 9001:9001 \
 	-e outlier="10000" webservice
 python -m testing http://localhost:9001/ with_dashboard_but_no_outliers
 
-Stop previous container
+# Stop previous containers
 docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
 
