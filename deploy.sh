@@ -12,12 +12,15 @@ docker build -t webservice .
 echo "Deploy the three webservices all at once"
 docker run -d --name with_dashboard_and_outliers -p 9001:9001 \
 	-e dashboard=True \
+	-e with_outliers=True \
 	-e outlier="0" webservice
 docker run -d --name with_dashboard_but_no_outliers -p 9002:9001 \
 	-e dashboard=True \
+	-e with_outliers=False \
 	-e outlier="10000" webservice
 docker run -d --name without_dashboard -p 9003:9001 \
 	-e dashboard=False \
+	-e with_outliers=False \
 	-e outlier="2.5" webservice
 
 python -m testing http://localhost:9001/ with_dashboard_and_outliers \
