@@ -57,7 +57,7 @@ def measure_time(index, builders, page, args=None):
     result = [index]
     for builder in builders:
         try:
-            r = requests.Request('get', builder.host + page + args).prepare()
+            r = requests.Request('get', builder._host + page + args).prepare()
             s = requests.Session()
             now = time.time()
             s.send(r)
@@ -71,7 +71,7 @@ def measure_time(index, builders, page, args=None):
 def test_endpoint(builders, page, n=500, args=None):
     title = ['id']
     for builder in builders:
-        title.append(builder.name)
+        title.append(builder._name)
     result = [','.join(title)]
 
     for i in range(10):  # init endpoint by calling it 10 times
