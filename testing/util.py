@@ -32,6 +32,6 @@ def save_result(data, page):
     """ Saves the result in a file """
     make_directory('output')
 
-    with open('output/{}.txt'.format(page), 'w') as file:
+    with open('output/{}.csv'.format(page), 'w') as file:
         for line in data:
             file.write(str(line) + '\n')
