@@ -84,7 +84,7 @@ def test_endpoint(builders, page, n=500, args=None):
         measure_time(i, builders, page, args)
 
     for i in range(n):
-        sys.stdout.write('\r{}/{}: {}'.format(i, n, page))
+        sys.stdout.write('\r{}/{}: {}'.format(i+1, n, page))
         sys.stdout.flush()
         result.append(measure_time(i, builders, page, args))
     print('')
