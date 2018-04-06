@@ -3,6 +3,7 @@ import sys
 import time
 import requests
 from bs4 import BeautifulSoup
+from .util import save_result
 
 
 def sleep_until_ready(hosts):
@@ -54,17 +55,21 @@ def monitor_all_endpoints(host):
 
 
 def measure_time(index, builders, page, args=None):
-    result = [index]
+    result = [str(index)]
+    page2 = page
+    if args:
+        page2 = page + args
     for builder in builders:
         try:
-            r = requests.Request('get', builder._host + page + args).prepare()
+            r = requests.Request('get', builder._host + page2).prepare()
             s = requests.Session()
             now = time.time()
             s.send(r)
             duration = (time.time() - now) * 1000
-            result.append(duration)
+            result.append(str(duration))
         except Exception as e:
             print('Exception for page {}: {}'.format(page, e))
+            raise
     return ','.join(result)
 
 
