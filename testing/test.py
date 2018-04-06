@@ -19,6 +19,7 @@ def sleep_until_ready(hosts):
                 time.sleep(1)
                 sys.stdout.write('\rWaiting for {} seconds to boot all hosts up'.format(int(time.time() - now)))
                 sys.stdout.flush()
+    print('')
 
 
 def check_configuration(host, dashboard_enabled):
@@ -83,6 +84,9 @@ def test_endpoint(builders, page, n=500, args=None):
         measure_time(i, builders, page, args)
 
     for i in range(n):
+        sys.stdout.write('\r{}/{}: {}'.format(i, n, page))
+        sys.stdout.flush()
         result.append(measure_time(i, builders, page, args))
+    print('')
 
     save_result(result, page)
