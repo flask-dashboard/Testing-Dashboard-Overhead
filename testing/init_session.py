@@ -6,5 +6,9 @@ def init_session(container_name):
 
     This command adds a session to the database. """
 
-    call(['docker exec -it {} "./query.sh"'
-                  .format(container_name)], shell=True)
+    call(['docker exec -it {} "./query.sh"'.format(container_name)], shell=True)
+
+
+def init_sessions(names):
+    for name in names:
+        init_session(name)

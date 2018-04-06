@@ -8,16 +8,17 @@ from .test_procedure import test_procedure
 
 
 if __name__ == '__main__':
-    host, name = parse_args()
-    sleep_until_ready(host)
+    hosts, names = parse_args()
+    sleep_until_ready(hosts)
 
-    dashboard_enabled = name != "without_dashboard"
-    if not check_configuration(host, dashboard_enabled):
-        raise Exception('Incorrectly configured {}'.format(name))
+    # Verify that the dashboard is correctly enabled/disabled
+    for i in range(len(hosts)):
+        dashboard_enabled = names[i] != "without_dashboard"
+        if not check_configuration(hosts[i], dashboard_enabled):
+            raise Exception('Incorrectly configured {}'.format(names[i]))
 
-    if dashboard_enabled:
-        monitor_all_endpoints(host)
+        if dashboard_enabled:
+            monitor_all_endpoints(hosts[i])
 
     print('Ready for testing the webservice')
-    test_procedure(host=host, name=name)
-    print('Done with testing webservice: {}'.format(name))
+    test_procedure(hosts=hosts, names=names)
