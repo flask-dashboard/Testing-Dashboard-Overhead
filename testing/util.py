@@ -8,15 +8,15 @@ import sys
 
 def parse_args():
     """ Returns the host (as a string) and the name from the script arguments. """
-    try:
-        return [sys.argv[1], sys.argv[3], sys.argv[5]], \
-               [sys.argv[2], sys.argv[4], sys.argv[6]]
-    except Exception as e:
-        print('Got exception: {}'.format(e))
-        print('Usage: {} {{Host-1}} {{Container-name-1}} {{Host-2}} {{Container-name-2}} {{Host-3}} '
-              '{{Container-name-3}}'.format(sys.argv[0]))
-        print('Given: {} {} {} {} {} {}'.format(sys.argv[0], sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4],
-                                                sys.argv[5], sys.argv[6]))
+    if len(sys.argv) >= 3 and len(sys.argv) % 2 == 1:
+        hosts = []
+        names = []
+        for i in range(1, len(sys.argv), 2):
+            hosts.append(sys.argv[i])
+            names.append(sys.argv[i+1])
+        return hosts, names
+    else:
+        print('Usage: {} {{Host}} {{Container-name}} [more hosts and names]'.format(sys.argv[0]))
         sys.exit(1)
 
 
@@ -26,6 +26,7 @@ def make_directory(name):
         os.makedirs(name)
     except Exception:
         pass
+        # Don't print the exception, as it is due to a folder that already exists
 
 
 def save_result(data, page):

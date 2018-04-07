@@ -17,9 +17,7 @@ class Builder(object):
 def test_procedure(hosts, names):
     """ The actual test procedure """
 
-    builders = [Builder(hosts[0], names[0]),
-                Builder(hosts[1], names[1]),
-                Builder(hosts[2], names[2])]
+    builders = [Builder(hosts[i], names[i]) for i in range(len(hosts))]
 
     test_endpoint(builders, 'available_languages')
     test_endpoint(builders, 'available_native_languages')
