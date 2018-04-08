@@ -65,9 +65,11 @@ def measure_time(index, builders, page, args=None):
             r = requests.Request('get', builder._host + page2).prepare()
             s = requests.Session()
             now = time.time()
-            s.send(r)
+            response = s.send(r)
             duration = (time.time() - now) * 1000
             result.append(str(duration))
+            if response.status_code != 200:
+                print(response.text)
         except Exception as e:
             print('Exception for page {}: {}'.format(page, e))
             raise
