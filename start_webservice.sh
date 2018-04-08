@@ -51,11 +51,14 @@ echo "OUTLIER_DETECTION_CONSTANT=$3" >> ./config.cfg
 cat ./config.cfg
 
 pip3.6 install flask-cors --upgrade
+cd zeeguu_api
+	sed -i "/\b\(dashboard\)\b/d" app.py
+cd ..
 if [ "$1" == "False" ]; then
 	pip uninstall Flask-MonitoringDashboard
 	echo "Skipping Flask-MonitoringDashboard by removing every line that contains 'dashboard'"
 	cd zeeguu_api
-	sed -i "/\b\(dashboard\)\b/d" app.py
+	sed -i "s/application.run(/application.run(debug=True,/g" __main__.py
 	cd ..
 fi
 python3.6 setup.py install
