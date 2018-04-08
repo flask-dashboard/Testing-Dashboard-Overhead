@@ -59,6 +59,7 @@ if [ "$1" == "False" ]; then
 	echo "Skipping Flask-MonitoringDashboard by removing every line that contains 'dashboard'"
 	cd zeeguu_api
 	sed -i "s/application.run(/application.run(debug=True,/g" __main__.py
+	cat __main__.py
 	cd ..
 fi
 python3.6 setup.py install
