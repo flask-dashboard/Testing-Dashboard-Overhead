@@ -3,19 +3,23 @@ import sys
 import time
 import requests
 from bs4 import BeautifulSoup
+from .util import save_result
 
 
-def sleep_until_ready(host):
-    """ Waits until the host is up."""
+def sleep_until_ready(hosts):
+    """ Waits until all the hosts are up."""
     now = time.time()
-    while True:
-        try:
-            requests.get(host + 'available_languages')
-            return
-        except Exception:
-            time.sleep(1)
-            sys.stdout.write('\rWaiting for {} seconds to boot up'.format(int(time.time() - now)))
-            sys.stdout.flush()
+    for host in hosts:
+        host_up = False
+        while not host_up:
+            try:
+                requests.get(host + 'available_languages')
+                host_up = True
+            except Exception:
+                time.sleep(1)
+                sys.stdout.write('\rWaiting for {} seconds to boot all hosts up'.format(int(time.time() - now)))
+                sys.stdout.flush()
+    print('')
 
 
 def check_configuration(host, dashboard_enabled):
@@ -51,19 +55,40 @@ def monitor_all_endpoints(host):
     client.post(url_rules, data=rules_data, headers=dict(Referer=url_rules))
 
 
-def measure_execution_time(host, page, n, method='get', data=None):
-    """ Call a certain page n times and returns the execution time (in ms) """
-    result = []
-    for i in range(n):
+def measure_time(index, builders, page, args=None):
+    result = [str(index)]
+    page2 = page
+    if args:
+        page2 = page + args
+    for builder in builders:
         try:
-            r = requests.Request(method, host + page, data=data).prepare()
+            r = requests.Request('get', builder._host + page2).prepare()
             s = requests.Session()
             now = time.time()
-            s.send(r)
+            response = s.send(r)
             duration = (time.time() - now) * 1000
-            result.append(duration)
+            result.append(str(duration))
+            if response.status_code != 200:
+                print(response.text)
         except Exception as e:
             print('Exception for page {}: {}'.format(page, e))
-    print('Measuring page "{}": {} ms'.format(page, sum(result)/len(result)))
-    return result
+            raise
+    return ','.join(result)
 
+
+def test_endpoint(builders, page, n=500, args=None):
+    title = ['id']
+    for builder in builders:
+        title.append(builder._name)
+    result = [','.join(title)]
+
+    for i in range(10):  # init endpoint by calling it 10 times
+        measure_time(i, builders, page, args)
+
+    for i in range(n):
+        sys.stdout.write('\r{}/{}: {}'.format(i+1, n, page))
+        sys.stdout.flush()
+        result.append(measure_time(i, builders, page, args))
+    print('')
+
+    save_result(result, page)

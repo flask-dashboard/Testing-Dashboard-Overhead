@@ -11,7 +11,9 @@ RUN apt-get install -y git wget python3-venv python3.6-dev build-essential check
 
 ARG dashboard
 ENV dashboard=$dashboard
+ARG with_outliers
+ENV with_outliers=$with_outliers
 ARG outlier
 ENV outlier=$outlier
 
-CMD ./start_webservice.sh $dashboard $outlier
+CMD ./start_webservice.sh $dashboard $with_outliers $outlier

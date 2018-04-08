@@ -2,7 +2,8 @@
 # This script installs the right dependencies and starts the web service.
 # The argument for this script are the following
 #  - $1: either 'True' or 'False', depending whether you would like to install the Flask-MonitoringDashboard
-#  - $2: the outlier_detection_constant (must be an integer)
+#  - $2: either 'True' or 'False', depending whether you want to monitor outliers or not.
+#  - $3: the outlier_detection_constant (must be an integer)
 echo "1: $1"
 echo "2: $2"
 
@@ -45,15 +46,20 @@ cd Zeeguu-API
 #configure dashboard
 export DASHBOARD_CONFIG="./config.cfg"
 echo "[dashboard]" >> ./config.cfg
-echo "OUTLIER_DETECTION_CONSTANT=$2" >> ./config.cfg
+echo "OUTLIERS_ENABLED=$2" >> ./config.cfg
+echo "OUTLIER_DETECTION_CONSTANT=$3" >> ./config.cfg
 cat ./config.cfg
 
 pip3.6 install flask-cors --upgrade
+cd zeeguu_api
+sed -i "s/application.run(/application.run(debug=True,/g" __main__.py
+cd ..
 if [ "$1" == "False" ]; then
 	pip uninstall Flask-MonitoringDashboard
 	echo "Skipping Flask-MonitoringDashboard by removing every line that contains 'dashboard'"
-	cd zeeguu_api
+	cd zeeguu_api	
 	sed -i "/\b\(dashboard\)\b/d" app.py
+	cat __main__.py
 	cd ..
 fi
 python3.6 setup.py install
