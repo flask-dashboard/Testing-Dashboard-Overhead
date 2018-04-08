@@ -29,10 +29,21 @@ def make_directory(name):
         # Don't print the exception, as it is due to a folder that already exists
 
 
+def unique_filename(prefix='', postfix=''):
+    """ Checks whether the filename: 'prefix + postfix' is available.
+    If not, it adds a counter, such that the name is unique """
+    index = 0
+    while os.path.isfile(prefix + str(index) + postfix):
+        index = index+1
+    return prefix + str(index) + postfix
+
+
 def save_result(data, page):
     """ Saves the result in a file """
     make_directory('output')
 
-    with open('output/{}.csv'.format(page), 'w') as file:
+    filename = unique_filename('output/{}-'.format(page), '.csv')
+
+    with open(filename, 'w') as file:
         for line in data:
             file.write(str(line) + '\n')
