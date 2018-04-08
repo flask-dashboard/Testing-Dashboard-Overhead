@@ -27,8 +27,8 @@ pip3.6 install wheel
 pip3.6 install -r requirements.txt
 python3.6 setup.py develop
 ./run_tests.sh
-# Populate the webservice
-python3.6 -m zeeguu.populate
+# Populate the database with some basic info
+./populate.sh
 cd ..
 
 # Install Python-Translators
